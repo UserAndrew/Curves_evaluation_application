@@ -13,6 +13,7 @@ class Curve
 public:
     virtual PairCoordinates getCoordinates (double) = 0;
     virtual double getDerivative (double) = 0;
+    virtual PairCoordinates getDerivativeCoordinates2D(double) = 0;
 };
 
 class Line : public Curve
@@ -31,15 +32,24 @@ public:
     }
 
     PairCoordinates getCoordinates (double t) override {
-        PairCoordinates coord;
-        coord.x = l*t + x0;
-        coord.y = m*t + y0;
+        PairCoordinates coordinates;
+        coordinates.x = l*t + x0;
+        coordinates.y = m*t + y0;
 
-        return coord;
+        return coordinates;
     }
 
     double getDerivative(double t) override {
+
         return m/l;
+    }
+
+    PairCoordinates getDerivativeCoordinates2D(double t) override {
+        PairCoordinates coordinates;
+        coordinates.x = 1;
+        coordinates.y = getDerivative(t);
+
+        return coordinates;
     }
 };
 
@@ -55,15 +65,24 @@ public:
     }
 
     PairCoordinates getCoordinates(double t) override {
-        PairCoordinates coord;
-        coord.x = rx*cos(t);
-        coord.y = ry*sin(t);
+        PairCoordinates coordinates;
+        coordinates.x = rx*cos(t);
+        coordinates.y = ry*sin(t);
 
-        return coord;
+        return coordinates;
     }
 
     double getDerivative(double t) override {
+
         return (-1)*((ry*cos(t))/(rx*sin(t)));
+    }
+
+    PairCoordinates getDerivativeCoordinates2D(double t) override {
+        PairCoordinates coordinates;
+        coordinates.x = 1;
+        coordinates.y = getDerivative(t);
+
+        return coordinates;
     }
 };
 
@@ -85,7 +104,8 @@ int main()
         PairCoordinates coordinate;
         coordinate = curve->getCoordinates(M_PI/4);
         std::cout << "Координаты " << i << "-й кривой: (" << coordinate.x <<", " << coordinate.y << ")" << std::endl;
-        std::cout << "Производная в этой точке равна " << curve->getDerivative(M_PI/4)<< std::endl;
+        coordinate = curve->getDerivativeCoordinates2D(M_PI/4);
+        std::cout << "2D-вектор производной в этой точке: {" << coordinate.x <<", " << coordinate.y << "}" << std::endl;
         i++;
     }
 
