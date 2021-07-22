@@ -13,7 +13,7 @@ class Curve
 public:
     virtual PairCoordinates getCoordinates (double) = 0;
     virtual double getDerivative (double) = 0;
-    virtual PairCoordinates getDerivativeCoordinates2D(double) = 0;
+    virtual PairCoordinates get2DCoordinatesDerivative(double) = 0;
 };
 
 class Line : public Curve
@@ -44,7 +44,7 @@ public:
         return m/l;
     }
 
-    PairCoordinates getDerivativeCoordinates2D(double t) override {
+    PairCoordinates get2DCoordinatesDerivative(double t) override {
         PairCoordinates coordinates;
         coordinates.x = 1;
         coordinates.y = getDerivative(t);
@@ -77,7 +77,7 @@ public:
         return (-1)*((ry*cos(t))/(rx*sin(t)));
     }
 
-    PairCoordinates getDerivativeCoordinates2D(double t) override {
+    PairCoordinates get2DCoordinatesDerivative(double t) override {
         PairCoordinates coordinates;
         coordinates.x = 1;
         coordinates.y = getDerivative(t);
@@ -104,7 +104,7 @@ int main()
         PairCoordinates coordinate;
         coordinate = curve->getCoordinates(M_PI/4);
         std::cout << "Координаты " << i << "-й кривой: (" << coordinate.x <<", " << coordinate.y << ")" << std::endl;
-        coordinate = curve->getDerivativeCoordinates2D(M_PI/4);
+        coordinate = curve->get2DCoordinatesDerivative(M_PI/4);
         std::cout << "2D-вектор производной в этой точке: {" << coordinate.x <<", " << coordinate.y << "}" << std::endl;
         i++;
     }
