@@ -88,5 +88,6 @@ int main()
         std::cout << "Производная в этой точке равна " << curve->getDerivative(M_PI/4)<< std::endl;
         i++;
     }
+
     return 0;
 }
