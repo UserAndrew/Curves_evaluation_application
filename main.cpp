@@ -11,26 +11,26 @@ struct PairCoordinates {
 class Curve
 {
 public:
+    virtual ~Curve(){ }
     virtual PairCoordinates getCoordinates (double) = 0;
-    virtual double getDerivative (double) = 0;
     virtual PairCoordinates get2DCoordinatesDerivative(double) = 0;
 };
 
 class Line : public Curve
 {
-public:
     double x0;
     double y0;
     double l;
     double m;
 
+public:
     Line(double x0, double y0, double l, double m) {
         this->x0 = x0;
         this->y0 = y0;
         this->l = l;
         this->m = m;
     }
-
+    virtual ~Line(){ }
     PairCoordinates getCoordinates (double t) override {
         PairCoordinates coordinates;
         coordinates.x = l*t + x0;
@@ -39,15 +39,10 @@ public:
         return coordinates;
     }
 
-    double getDerivative(double t) override {
-
-        return m/l;
-    }
-
     PairCoordinates get2DCoordinatesDerivative(double t) override {
         PairCoordinates coordinates;
-        coordinates.x = 1;
-        coordinates.y = getDerivative(t);
+        coordinates.x = l;
+        coordinates.y = m;
 
         return coordinates;
     }
@@ -55,15 +50,15 @@ public:
 
 class Ellipse : public Curve
 {
-public:
     double rx;
     double ry;
 
+public:
     Ellipse(double rx, double ry) {
         this->rx = rx;
         this->ry = ry;
     }
-
+    virtual ~Ellipse(){ }
     PairCoordinates getCoordinates(double t) override {
         PairCoordinates coordinates;
         coordinates.x = rx*cos(t);
@@ -72,15 +67,10 @@ public:
         return coordinates;
     }
 
-    double getDerivative(double t) override {
-
-        return (-1)*((ry*cos(t))/(rx*sin(t)));
-    }
-
     PairCoordinates get2DCoordinatesDerivative(double t) override {
         PairCoordinates coordinates;
-        coordinates.x = 1;
-        coordinates.y = getDerivative(t);
+        coordinates.x = rx*(-sin(t));
+        coordinates.y = ry*(cos(t));
 
         return coordinates;
     }
